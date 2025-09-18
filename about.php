@@ -16,11 +16,11 @@
     <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
     <link href="assets/css/main.css" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Aroha Edible Oils | Trusted Suppliers of Premium Edible Oils in India</title>
-<meta name="description" content="Aroha Edible Oils – leading supplier of premium, natural, eco-friendly edible oils in India. Learn about our mission, values, and commitment to quality.">
-<link rel="canonical" href="https://arohaedible.com/about" />
+    <title>PowerOn | about </title>
+    <meta name="description" content="Aroha Edible Oils – leading supplier of premium, natural, eco-friendly edible oils in India. Learn about our mission, values, and commitment to quality.">
+    <link rel="canonical" href="https://arohaedible.com/about" />
 
-<meta name="robots" content="index, follow">
+    <meta name="robots" content="index, follow">
 
 
 
@@ -28,21 +28,21 @@
 
 <body>
 
-    <?php include("./components/Header.php") ?>       
+    <?php include("./components/Header.php") ?>
 
     <!-- Contact Hero -->
-    <div class="container-fluid py-5">
-        <div class="container py-5">
+    <div class="container-fluid pt-5">
+        <div class="container">
             <div class="row justify-content-start">
-                <div class="col-lg-8 text-center text-lg-start">
-                    <h1 class="display-1 text-dark">About Us</h1>
+                <div class=" text-lg-center">
+                    <h1 class="display-1 text-dark mb-md-4 ">About Us</h1>
                 </div>
             </div>
         </div>
     </div>
-<?php include('components/AboutSection.php'); ?>
-    <?php include("./components/Footer.php") ?> 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> 
+    <?php include('components/AboutSection.php'); ?>
+    <?php include("./components/Footer.php") ?>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

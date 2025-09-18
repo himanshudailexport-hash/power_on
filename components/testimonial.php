@@ -1,6 +1,6 @@
 <section class="testimonial-section py-5" style="background-image: url('./img/bg-testimonial.jpg'); background-size: cover; background-position: center;">
   <div class="container">
-    <h2 class="text-center text-dark mb-4">Testimonial</h2>
+    <h2 class="text-center text-dark mb-4">Testimonials</h2>
     <div class="carousel-container position-relative">
       <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-inner">

@@ -23,7 +23,7 @@
     <?php include("./components/Header.php") ?>
 
     <!-- Contact Hero -->
-    <div class="container-fluid py-5">
+    <!-- <div class="container-fluid py-5">
         <div class="container">
             <div class="row justify-content-start">
                 <div class="col-lg-8 text-center text-lg-start">
@@ -31,7 +31,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
     <?php include("./components/testimonial.php") ?>
 
 

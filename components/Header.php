@@ -74,12 +74,12 @@ if (isset($con)) { // Check if $con is set (connection successful)
 <header id="header" class="header d-flex align-items-center sticky-top bg-white shadow-sm">
     <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
         <a href="/" class="logo d-flex align-items-center me-auto">
-            <img src="/assets/img/logo.webp" alt="Logo" style="width: 90px;" />
+            <img src="assets/img/images/logo.png" alt="Logo" style="width: 90px;" />
         </a>
 
         <nav id="navmenu" class="navmenu">
             <ul>
-                <li><a href="/">Home</a></li>
+                <li><a href="index.php">Home</a></li>
                 <li class="dropdown"><a href="#"><span>Company Profile</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
                     <ul>
                         <li><a href="about.php">About</a></li>
@@ -118,7 +118,7 @@ if (isset($con)) { // Check if $con is set (connection successful)
         </nav>
 
         <a class="btn-getstarted ms-3" style="text-decoration: none;" href="#" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
-            Enquire Now <span id="cart-count" class="badge rounded-pill bg-danger ms-1" style="display: none;">0</span>
+            Cart <span id="cart-count" class="badge rounded-pill bg-danger ms-1" style="display: none;">0</span>
         </a>
 
         <i class="mobile-nav-toggle d-xl-none bi bi-list fs-2 ms-3"></i>
@@ -133,7 +133,7 @@ if (isset($con)) { // Check if $con is set (connection successful)
                 const product = {
                     id: this.dataset.id,
                     name: this.dataset.name,
-                    price: this.dataset.price,
+                    price: parseFloat(this.dataset.price),
                     image: this.dataset.image,
                     quantity: 1
                 };
@@ -168,23 +168,57 @@ if (isset($con)) { // Check if $con is set (connection successful)
             let totalMRP = 0;
             let discount = 0;
 
-            cart.forEach(item => {
+            cart.forEach((item, index) => {
                 totalItems += item.quantity;
                 totalMRP += item.price * item.quantity;
 
                 let li = document.createElement("li");
                 li.className = "list-group-item d-flex justify-content-between align-items-center";
                 li.innerHTML = `
-                <div>
-                    <div><strong>${item.name}</strong></div>
-                    <div>₹${item.price} x ${item.quantity}</div>
-                </div>
-                <img src="${item.image}" width="50" height="50" style="object-fit:cover;border-radius:5px;">
-            `;
+                    <div>
+                        <div><strong>${item.name}</strong></div>
+                        <div>
+                            ₹${item.price} x 
+                            <span id="quantity-${index}">${item.quantity}</span>
+                            <button class="btn btn-sm btn-outline-success increment" data-index="${index}">
+                                <i class="bi bi-plus"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger decrement" data-index="${index}">
+                                <i class="bi bi-dash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <img src="${item.image}" width="50" height="50" style="object-fit:cover;border-radius:5px;">
+                `;
                 cartList.appendChild(li);
             });
 
-            discount = totalMRP * 0.1; // example 10% discount
+            // Increment event
+            document.querySelectorAll(".increment").forEach(btn => {
+                btn.addEventListener("click", function() {
+                    let index = this.getAttribute("data-index");
+                    cart[index].quantity++;
+                    localStorage.setItem("cart", JSON.stringify(cart));
+                    updateCartUI();
+                });
+            });
+
+            // Decrement event
+            document.querySelectorAll(".decrement").forEach(btn => {
+                btn.addEventListener("click", function() {
+                    let index = this.getAttribute("data-index");
+                    if (cart[index].quantity > 1) {
+                        cart[index].quantity--;
+                    } else {
+                        cart.splice(index, 1); // remove item if quantity is 0
+                    }
+                    localStorage.setItem("cart", JSON.stringify(cart));
+                    updateCartUI();
+                });
+            });
+
+            // Example discount calculation (10%)
+            discount = totalMRP * 0.1;
             let finalTotal = totalMRP - discount;
 
             itemCount.innerText = totalItems;
@@ -211,9 +245,7 @@ if (isset($con)) { // Check if $con is set (connection successful)
 
         // Initialize cart UI on load
         updateCartUI();
-    });
-</script>
-
+    });</script>
 
 <style>
     /* Base styles for the nav menu (desktop) */
@@ -460,12 +492,12 @@ if (isset($con)) { // Check if $con is set (connection successful)
     }
 </style>
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function() {
         const navToggle = document.querySelector(".mobile-nav-toggle");
         const navMenu = document.querySelector(".navmenu");
 
         if (navToggle && navMenu) {
-            navToggle.addEventListener("click", function () {
+            navToggle.addEventListener("click", function() {
                 navMenu.classList.toggle("navmenu-active");
             });
 

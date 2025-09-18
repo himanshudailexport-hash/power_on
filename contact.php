@@ -27,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Contact Aroha Edible Oils | Get in Touch with Us Today</title>
+    <title>Contact PowerOn | Get in Touch with Us Today</title>
     <meta name="description" content="Reach out to Aroha Edible Oils for inquiries, bulk orders, or support. Visit our Kanpur office, call +91 9250101554, or email info@arohaedible.com.">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -60,11 +60,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <?php include("./components/Header.php") ?>
 
 <!-- Contact Hero -->
-<div class="container-fluid py-5">
+<div class="container-fluid pt-5">
     <div class="container">
         <div class="row justify-content-start">
-            <div class="col-lg-8 text-center text-lg-start">
-                <h1 class="display-1 text-dark mb-md-4">Contact Us</h1>
+            <div class=" text-lg-center">
+                <h1 class="display-1 text-dark mb-md-4 ">Contact Us</h1>
             </div>
         </div>
     </div>
@@ -110,19 +110,19 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                 <div class="ps-3">
                     <h3 class="text-dark">Our Office</h3>
-                    <span class="text-dark">Aroha edible oils, main road, Koyla Nagar Daheli Sujanpur, Kanpur Uttar Pradesh 208011</span>
+                    <span class="text-dark">501/2, 4th Main, Opp. Bank of Baroda, P J Extension, Nittuvalli, Davanagere, Karnataka, India - 577002</span>
                 </div>
             </div>
             <div class="d-flex mb-4">
                 <div class="ps-3">
                     <h3 class="text-dark">Email Us</h3>
-                    <span class="text-dark">info@arohaedible.com</span>
+                    <span class="text-dark">poweron.dvg@gmail.com</span>
                 </div>
             </div>
             <div class="d-flex">
                 <div class="ps-3">
                     <h3 class="text-dark">Call Us</h3>
-                    <span class="text-dark">+91 9250101554</span>
+                    <span class="text-dark">+91 9901998067</span>
                 </div>
             </div>
         </div>
@@ -133,11 +133,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <div class="container my-5">
     <div class="ratio ratio-16x9 rounded shadow">
         <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3573.9053648548756!2d80.35923227518653!3d26.394244882179713!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x399c47c380e3d3ff%3A0xc061a052af56a53c!2sAroha%20Edible!5e0!3m2!1sen!2sin!4v1752059666080!5m2!1sen!2sin"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3863.3717341753472!2d75.91342407507224!3d14.463331180422772!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bba259df5dcf50d%3A0xe9333107ce1ea357!2sBank%20of%20Baroda%20P.%20J.%20Extension%20Davangere%20Branch!5e0!3m2!1sen!2sin!4v1758176493235!5m2!1sen!2sin"
             allowfullscreen=""
             loading="lazy"
             referrerpolicy="no-referrer-when-downgrade">
         </iframe>
+        
     </div>
 </div>
 
