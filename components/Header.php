@@ -1,5 +1,5 @@
 <?php
-// C:\xampp\htdocs\aroha\components\Header.php
+
 
 // Ensure db.php is included to get the database connection ($con)
 // Adjust the path if your db.php is located elsewhere relative to Header.php
@@ -118,7 +118,7 @@ if (isset($con)) { // Check if $con is set (connection successful)
         </nav>
 
         <a class="btn-getstarted ms-3" style="text-decoration: none;" href="#" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
-            Cart <span id="cart-count" class="badge rounded-pill bg-danger ms-1" style="display: none;">0</span>
+            Cart <span id="cart-count" class=" rounded-pill bg-danger ms-1" style="display: none;">0</span>
         </a>
 
         <i class="mobile-nav-toggle d-xl-none bi bi-list fs-2 ms-3"></i>

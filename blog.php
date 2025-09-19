@@ -73,7 +73,7 @@ if (isset($_GET['slug'])) {
 
     <link href="../../assets/css/main.css" rel="stylesheet">
     <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
+    <link href="assets/css/main.css" rel="stylesheet">
 
 
     <style>
@@ -94,6 +94,7 @@ if (isset($_GET['slug'])) {
         }
 
         .blog-hero img {
+            margin-top: 10px;
             width: 100%;
             height: 100%;
             object-fit: cover;
@@ -116,7 +117,7 @@ if (isset($_GET['slug'])) {
             font-size: 2.5rem;
             color: #333;
             margin-bottom: 1.5rem;
-            border-bottom: 3px solid #007bff; /* A subtle underline */
+            /* border-bottom: 3px solid #007bff;  */
             padding-bottom: 10px;
         }
 

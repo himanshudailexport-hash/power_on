@@ -77,7 +77,7 @@ while ($cat = $categories->fetch_assoc()) {
 .add-to-cart {
     width: 100%;
     padding: 10px;
-    background-color: rgb(67, 179, 57);
+    background-color: rgb(90, 1, 109);
     color: white;
     border: none;
     cursor: pointer;
@@ -85,5 +85,8 @@ while ($cat = $categories->fetch_assoc()) {
     font-size: 14px;
     margin-top: 10px;
 }
-.add-to-cart:hover { background-color: rgb(104, 241, 91); }
+.add-to-cart:hover {
+     background-color: rgba(156, 42, 182, 1);
+
+      }
 </style>

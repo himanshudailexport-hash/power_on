@@ -18,6 +18,7 @@ $result = $con->query($sql);
                 $title = htmlspecialchars($row['blogtitle']);
                 $image = 'data:image/jpeg;base64,' . base64_encode($row['blog_image']);
                 $date = date('M d, Y', strtotime($row['created_at']));
+                  $url = 'blog.php?slug=' . rawurlencode($slug);
                 ?>
                 <div class="col-md-6 col-lg-4">
                     <div class="card h-100 shadow-sm border-0">
@@ -25,7 +26,7 @@ $result = $con->query($sql);
                         <div class="card-body d-flex flex-column">
                             <h5 class="card-title"><?= $title ?></h5>
                             <p class="card-text text-muted mb-2"><?= $date ?></p>
-                            <a href="/blog/<?= $slug ?>" class="btn btn-outline-primary mt-auto">Read More</a>
+                            <a href="blog.php?slug=<?= urlencode($slug) ?>" class="btn btn-outline-primary mt-auto">Read More</a>
                         </div>
                     </div>
                 </div>
