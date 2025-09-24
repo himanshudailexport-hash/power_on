@@ -39,7 +39,7 @@ $product_id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
 if ($product_id <= 0) die("Invalid Product ID.");
 
 // Fetch product details
-$stmt = $con->prepare("SELECT id, name, description, price, stock, category, brand, image1, image2, image3 FROM products WHERE id = ?");
+$stmt = $con->prepare("SELECT id, name, description, warranty, rang,features, price, stock, category, brand, image1, image2, image3 FROM products WHERE id = ?");
 $stmt->bind_param("i", $product_id);
 $stmt->execute();
 $result = $stmt->get_result();
@@ -62,6 +62,9 @@ if ($result->num_rows > 0) {
         "name" => $row['name'],
         "description" => $row['description'],
         "price" => $row['price'],
+        "warranty" => $row['warranty'],
+        "rang" => $row['rang'],
+        "features" => $row['features'],
         "stock" => $row['stock'],
         "category" => $row['category'],
         "brand" => $row['brand'],
@@ -149,6 +152,9 @@ $stmt->close();
         <tr><th>Category</th><td><?= htmlspecialchars(getCategoryNameById($product['category'], $categories)) ?></td></tr>
         <tr><th>Brand</th><td><?= htmlspecialchars(getBrandNameById($product['brand'], $Brands)) ?></td></tr>
         <tr><th>Stock</th><td><?= (int)$product['stock'] ?> units</td></tr>
+        <tr><th>Warranty</th><td><?= (int)$product['warranty'] ?> Months</td></tr>
+        <tr><th>Range Available</th><td><?= $product['rang'] ?> </td></tr>
+        <tr><th>Features</th> <td><p><?= nl2br(htmlspecialchars($product['features'])) ?></p></td></tr>
       </table>
 
       <div class="my-3">
@@ -156,7 +162,7 @@ $stmt->close();
         <p><?= nl2br(htmlspecialchars($product['description'])) ?></p>
       </div>
 
-      <button id="add-to-cart-btn" class="btn btn-success btn-lg w-100">
+      <button id="add-to-cart-btn" class="btn btn-lg w-100" style="background-color: #5a016d; color:white;">
         <i class="fas fa-cart-plus me-2"></i> Add to Cart
       </button>
     </div>

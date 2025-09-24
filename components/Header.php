@@ -37,7 +37,7 @@ if (isset($con)) { // Check if $con is set (connection successful)
         <ul id="cart-items" class="list-group"></ul>
 
         <div class="bg-light p-3 mt-3 rounded">
-            <h6 class="text-danger"><i class="bi bi-percent"></i> Coupons</h6>
+            <h6 class="text"><i class="bi bi-percent"></i> Coupons</h6>
             <p class="text-danger small m-0">Apply now and save extra!</p>
         </div>
 
@@ -180,11 +180,14 @@ if (isset($con)) { // Check if $con is set (connection successful)
                         <div>
                             ₹${item.price} x 
                             <span id="quantity-${index}">${item.quantity}</span>
+                            <button class="btn btn-sm btn-outline-danger decrement" data-index="${index}">
+                                <i class="bi bi-dash"></i>
+                            </button>
                             <button class="btn btn-sm btn-outline-success increment" data-index="${index}">
                                 <i class="bi bi-plus"></i>
                             </button>
-                            <button class="btn btn-sm btn-outline-danger decrement" data-index="${index}">
-                                <i class="bi bi-dash"></i>
+                            <button class="btn btn-sm btn-outline-danger delete-item" data-index="${index}">
+                                <i class="bi bi-trash"></i>
                             </button>
                         </div>
                     </div>
@@ -212,6 +215,16 @@ if (isset($con)) { // Check if $con is set (connection successful)
                     } else {
                         cart.splice(index, 1); // remove item if quantity is 0
                     }
+                    localStorage.setItem("cart", JSON.stringify(cart));
+                    updateCartUI();
+                });
+            });
+
+            // delete the products 
+            document.querySelectorAll(".delete-item").forEach(btn => {
+                btn.addEventListener("click", function() {
+                    let index = this.getAttribute("data-index");
+                    cart.splice(index, 1); // remove product completely
                     localStorage.setItem("cart", JSON.stringify(cart));
                     updateCartUI();
                 });
@@ -245,7 +258,8 @@ if (isset($con)) { // Check if $con is set (connection successful)
 
         // Initialize cart UI on load
         updateCartUI();
-    });</script>
+    });
+</script>
 
 <style>
     /* Base styles for the nav menu (desktop) */
@@ -254,45 +268,45 @@ if (isset($con)) { // Check if $con is set (connection successful)
         flex-direction: row;
         gap: 20px;
         padding: 0;
-        /* Ensure no default padding affecting alignment */
+
         margin: 0;
-        /* Ensure no default margin affecting alignment */
+
     }
 
     .navmenu ul {
         list-style: none;
-        /* Remove bullet points */
+
         margin: 0;
         padding: 0;
         display: flex;
-        /* For desktop, keep horizontal flow */
+
         gap: 20px;
-        /* Space between main menu items */
+
     }
 
     .navmenu ul li a {
         text-decoration: none;
         display: block;
-        /* Make links block-level for padding/margins */
+
         padding: 10px 0;
-        /* Example padding */
+
         color: #333;
-        /* Default link color */
+
     }
 
     .navmenu ul li a.active {
         color: blue;
-        /* Highlight active link */
+
     }
 
     .navmenu .dropdown {
         position: relative;
-        /* For desktop dropdown positioning */
+
     }
 
     .navmenu .dropdown ul {
         display: none;
-        /* Hidden by default on desktop */
+
         position: absolute;
         top: 100%;
         left: 0;
@@ -301,26 +315,25 @@ if (isset($con)) { // Check if $con is set (connection successful)
         min-width: 160px;
         z-index: 1000;
         flex-direction: column;
-        /* Ensure vertical stack for dropdown items */
+
         gap: 0;
-        /* No gap between sub-menu items */
+
     }
 
     .navmenu .dropdown:hover>ul {
         display: flex;
-        /* Show on hover for desktop */
     }
 
     .navmenu .dropdown ul li {
         padding: 0;
-        /* Remove padding from list items for sub-menu */
+
     }
 
     .navmenu .dropdown ul li a {
         padding: 10px 15px;
-        /* Padding for sub-menu items */
+
         white-space: nowrap;
-        /* Prevent breaking of long text */
+
     }
 
     .navmenu .toggle-dropdown {
@@ -333,136 +346,120 @@ if (isset($con)) { // Check if $con is set (connection successful)
     @media (max-width: 991px) {
         .navmenu {
             position: fixed;
-            /* Use fixed for full viewport coverage */
+
             top: 0;
-            /* Start from the very top */
+
             right: 0;
             width: 280px;
-            /* Adjust width as needed */
+
             height: 100vh;
-            /* Full viewport height */
+
             flex-direction: column;
             background-color: white;
             padding: 1rem;
             box-shadow: -4px 0 20px rgba(0, 0, 0, 0.2);
-            /* Shadow from left */
+
             z-index: 1050;
-            /* Higher than Bootstrap offcanvas if needed, but offcanvas is 1045 */
+
             transform: translateX(100%);
-            /* Start off-screen to the right */
+
             transition: transform 0.3s ease-out;
             visibility: hidden;
             overflow-y: auto;
-            /* Enable scrolling for long menus */
+
             justify-content: flex-start;
-            /* Align content to the top */
+
         }
 
         .navmenu.navmenu-active {
             transform: translateX(0);
-            /* Slide into view */
+
             visibility: visible;
         }
 
         .navmenu ul {
             flex-direction: column;
-            /* Stack menu items vertically */
+
             gap: 0;
-            /* Remove gap between main menu items in mobile */
+
             padding-top: 50px;
-            /* Space from top of offcanvas to first item */
+
             width: 100%;
-            /* Take full width of offcanvas */
+
         }
 
         .navmenu ul li {
             margin-bottom: 0;
-            /* Adjust vertical spacing as needed */
+
             border-bottom: 1px solid #eee;
-            /* Visual separator between main items */
+
         }
 
         .navmenu ul li:last-child {
             border-bottom: none;
-            /* No border for the last item */
+
         }
 
         .navmenu ul li a {
             padding: 12px 15px;
-            /* Comfortable padding for touch */
+
             color: #333;
-            /* Default link color */
+
             width: 100%;
-            /* Make link fill the list item */
+
             box-sizing: border-box;
-            /* Include padding in width */
         }
 
         .navmenu ul li a.active {
             color: blue;
-            /* Highlight active link */
         }
 
         /* Mobile Dropdown Specific Styles */
         .navmenu .dropdown ul {
             position: static;
-            /* Allows sub-menu to flow naturally below parent */
             visibility: visible;
-            /* Make visible when parent is active */
             opacity: 1;
             box-shadow: none;
-            /* Remove shadow for nested list */
             background-color: #f8f8f8;
-            /* Slightly different background for sub-menu */
             padding-left: 25px;
-            /* Indent sub-items more */
             display: none;
-            /* Hidden by default, toggled by JS 'active' class */
             border-top: 1px solid #eee;
-            /* Separator for sub-menu */
+
         }
 
         .navmenu .dropdown.active>ul {
             display: flex;
-            /* Show sub-menu when parent has 'active' class */
         }
 
         .navmenu .dropdown ul li {
             border-bottom: none;
-            /* No border between sub-menu items */
         }
 
         .navmenu .dropdown ul li a {
             padding: 10px 15px;
-            /* Padding for sub-menu items */
         }
 
         .navmenu .dropdown .toggle-dropdown {
             display: inline-block;
-            /* Ensure arrow is visible */
             position: absolute;
-            /* Position relative to parent link */
             right: 15px;
-            /* Align to the right of the menu item */
             top: 50%;
             transform: translateY(-50%) rotate(0deg);
-            /* Initial rotation */
             cursor: pointer;
             font-size: 0.9em;
-            /* Smaller arrow */
             color: #666;
-            /* Subtler color */
+
         }
 
         .navmenu .dropdown.active .toggle-dropdown {
             transform: translateY(-50%) rotate(180deg);
-            /* Rotate when active */
+
         }
 
-        /* Hide desktop toggle for mobile */
+
         .d-xl-none {
             display: block !important;
-            /* Ensure mobile toggle is always block on mobile */
+
         }
     }
 
@@ -470,24 +467,23 @@ if (isset($con)) { // Check if $con is set (connection successful)
     @media (min-width: 992px) {
         .mobile-nav-toggle {
             display: none !important;
-            /* Hide mobile toggle on desktop */
+
         }
 
         .navmenu {
             display: flex;
-            /* Keep horizontal flex on desktop */
             flex-direction: row;
-            /* Other desktop specific styles if any */
+
         }
 
         .navmenu .dropdown ul {
             display: none;
-            /* Hidden by default on desktop */
+
         }
 
         .navmenu .dropdown:hover>ul {
             display: flex;
-            /* Show on hover for desktop */
+
         }
     }
 </style>

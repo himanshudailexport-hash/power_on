@@ -28,7 +28,8 @@ $product = null;
 $product_id = 0;
 
 // Product fetch function
-function fetchProduct($con, $product_id) {
+function fetchProduct($con, $product_id)
+{
     $stmt = $con->prepare("SELECT * FROM products WHERE id = ?");
     $stmt->bind_param("i", $product_id);
     $stmt->execute();
@@ -67,6 +68,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $price = floatval($_POST['price'] ?? 0);
     $discount_price = floatval($_POST['discount_price'] ?? 0);
     $stock = intval($_POST['stock'] ?? 0);
+    $warranty = intval($_POST['warranty'] ?? 0);
+    $rang = trim($_POST['rang'] ?? '');
+    $location = trim($_POST['location'] ?? 'Anywhere in India');
+    $features = trim($_POST['features'] ?? '');
     $category = intval($_POST['category'] ?? 0);
     $brand = intval($_POST['brand'] ?? 0);
     $rating = floatval($_POST['rating'] ?? 0);
@@ -99,47 +104,41 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 
-    // UPDATE query
-    $stmt = $con->prepare("UPDATE products SET
-        name = ?,
-        description = ?,
-        price = ?,
-        discount_price = ?,
-        stock = ?,
-        category = ?,
-        brand = ?,
-        rating = ?,
-        isTrendingCategory = ?,
-        isBestSeller = ?,
-        isNewArrival = ?,
-        isLimitedStock = ?,
-        tags = ?,
-        image1 = ?,
-        image2 = ?,
-        image3 = ?
-        WHERE id = ?");
-
-$stmt->bind_param(
-    "ssddiiidiiiissssi",
-    $name,               // s
-    $description,        // s
-    $price,              // d
-    $discount_price,     // d
-    $stock,              // i
-    $category,           // i
-    $brand,              // i
-    $rating,             // d
-    $isTrendingCategory, // i
-    $isBestSeller,       // i
-    $isNewArrival,       // i
-    $isLimitedStock,     // i
-    $tags,               // s
-    $images[0],          // s
-    $images[1],          // s
-    $images[2],          // s
-    $product_id          // i
-);
-
+    $stmt = $con->prepare("
+    UPDATE products 
+    SET name = ?, description = ?, price = ?, discount_price = ?, stock = ?, warranty = ?, 
+        category = ?, location = ?, features = ?, brand = ?, rating = ?, 
+        isTrendingCategory = ?, isBestSeller = ?, isNewArrival = ?, isLimitedStock = ?, 
+        tags = ?, image1 = ?, image2 = ?, image3 = ?, rang = ? 
+    WHERE id = ?
+");
+    if (!$stmt) {
+        die("❌ SQL Prepare failed: " . $con->error);
+    }
+    $stmt->bind_param(
+        "ssddiiissidiiiisssssi",
+        $name,
+        $description,
+        $price,
+        $discount_price,
+        $stock,
+        $warranty,
+        $category,
+        $location,
+        $features,
+        $brand,
+        $rating,
+        $isTrendingCategory,
+        $isBestSeller,
+        $isNewArrival,
+        $isLimitedStock,
+        $tags,
+        $images[0],
+        $images[1],
+        $images[2],
+        $rang,
+        $product_id
+    );
 
     if ($stmt->execute()) {
         echo "<div class='alert alert-success'>✅ Product updated successfully!</div>";
@@ -157,114 +156,133 @@ $stmt->bind_param(
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <title>Update Product</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
+
 <body>
-<div class="container mt-5">
-    <h2>Update Product (ID: <?= htmlspecialchars($product_id) ?>)</h2>
-    <hr>
-    <form action="" method="POST" enctype="multipart/form-data">
-        <input type="hidden" name="product_id" value="<?= htmlspecialchars($product_id) ?>">
-        <div class="row">
-            <div class="col-md-6 mb-3">
-                <label class="form-label">Product Name:</label>
-                <input type="text" name="name" class="form-control" value="<?= htmlspecialchars($product['name'] ?? '') ?>" required>
-            </div>
-            <div class="col-md-6 mb-3">
-                <label class="form-label">Category:</label>
-                <select name="category" class="form-select" required>
-                    <option value="">Select Category</option>
-                    <?php foreach ($categories as $cat): ?>
-                        <option value="<?= $cat['id'] ?>" <?= ($product['category'] == $cat['id']) ? 'selected' : '' ?>>
-                            <?= htmlspecialchars($cat['name']) ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
-            <div class="col-md-6 mb-3">
-                <label class="form-label">Brand:</label>
-                <select name="brand" class="form-select" required>
-                    <option value="">Select Brand</option>
-                    <?php foreach ($brands as $brand): ?>
-                        <option value="<?= $brand['id'] ?>" <?= ($product['brand'] == $brand['id']) ? 'selected' : '' ?>>
-                            <?= htmlspecialchars($brand['name']) ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
-            <div class="col-md-6 mb-3">
-                <label class="form-label">Price:</label>
-                <input type="number" step="0.01" name="price" class="form-control" value="<?= $product['price'] ?? 0 ?>" required>
-            </div>
-            <div class="col-md-6 mb-3">
-                <label class="form-label">Discount Price:</label>
-                <input type="number" step="0.01" name="discount_price" class="form-control" value="<?= $product['discount_price'] ?? 0 ?>">
-            </div>
-            <div class="col-md-6 mb-3">
-                <label class="form-label">Stock:</label>
-                <input type="number" name="stock" class="form-control" value="<?= $product['stock'] ?? 0 ?>" required>
-            </div>
-            <div class="col-md-6 mb-3">
-                <label class="form-label">Rating:</label>
-                <input type="number" step="0.1" name="rating" class="form-control" min="0" max="5" value="<?= $product['rating'] ?? 0 ?>">
-            </div>
-            <div class="col-12 mb-3">
-                <label class="form-label">Tags:</label>
-                <input type="text" name="tags" class="form-control" value="<?= htmlspecialchars($product['tags'] ?? '') ?>">
-            </div>
-            <div class="col-12 mb-3">
-                <label class="form-label">Description:</label>
-                <textarea name="description" class="form-control" rows="3" required><?= htmlspecialchars($product['description'] ?? '') ?></textarea>
-            </div>
-            <div class="col-12 mb-3">
-                <label class="form-label">Upload Images (max 3):</label>
-                <input type="file" name="images[]" class="form-control" multiple>
-                <?php
-                for ($i = 1; $i <= 3; $i++) {
-                    $imgCol = 'image' . $i;
-                    if (!empty($product[$imgCol])) {
-                        echo '<div class="mt-2">Current Image ' . $i . ': <img src="../' . htmlspecialchars($product[$imgCol]) . '" width="100"></div>';
+    <div class="container mt-5">
+        <h2>Update Product (ID: <?= htmlspecialchars($product_id) ?>)</h2>
+        <hr>
+        <form action="" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="product_id" value="<?= htmlspecialchars($product_id) ?>">
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Product Name:</label>
+                    <input type="text" name="name" class="form-control" value="<?= htmlspecialchars($product['name'] ?? '') ?>" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Category:</label>
+                    <select name="category" class="form-select" required>
+                        <option value="">Select Category</option>
+                        <?php foreach ($categories as $cat): ?>
+                            <option value="<?= $cat['id'] ?>" <?= ($product['category'] == $cat['id']) ? 'selected' : '' ?>>
+                                <?= htmlspecialchars($cat['name']) ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Brand:</label>
+                    <select name="brand" class="form-select" required>
+                        <option value="">Select Brand</option>
+                        <?php foreach ($brands as $brand): ?>
+                            <option value="<?= $brand['id'] ?>" <?= ($product['brand'] == $brand['id']) ? 'selected' : '' ?>>
+                                <?= htmlspecialchars($brand['name']) ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Price:</label>
+                    <input type="number" step="0.01" name="price" class="form-control" value="<?= $product['price'] ?? 0 ?>" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Discount Price:</label>
+                    <input type="number" step="0.01" name="discount_price" class="form-control" value="<?= $product['discount_price'] ?? 0 ?>">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Stock:</label>
+                    <input type="number" name="stock" class="form-control" value="<?= $product['stock'] ?? 0 ?>" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Rating:</label>
+                    <input type="number" step="0.1" name="rating" class="form-control" min="0" max="5" value="<?= $product['rating'] ?? 0 ?>">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">warranty:</label>
+                    <input type="number" step="0.1" name="warranty" class="form-control" value="<?= $product['warranty'] ?? 0 ?>">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Range Available:</label>
+                    <input type="text" step="0.1" name="rang" class="form-control" value="<?= $product['rang'] ?? 0 ?>">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Location:</label>
+                    <input type="text" step="0.1" name="location" class="form-control" value="<?= $product['location'] ?? 0 ?>">
+                </div>
+                <div class="col-12 mb-3">
+                    <label class="form-label">Features:</label>
+                    <textarea name="features" class="form-control" rows="3" required><?= htmlspecialchars($product['features'] ?? '') ?></textarea>
+                </div>
+                <div class="col-12 mb-3">
+                    <label class="form-label">Tags:</label>
+                    <input type="text" name="tags" class="form-control" value="<?= htmlspecialchars($product['tags'] ?? '') ?>">
+                </div>
+                <div class="col-12 mb-3">
+                    <label class="form-label">Description:</label>
+                    <textarea name="description" class="form-control" rows="3" required><?= htmlspecialchars($product['description'] ?? '') ?></textarea>
+                </div>
+                <div class="col-12 mb-3">
+                    <label class="form-label">Upload Images (max 3):</label>
+                    <input type="file" name="images[]" class="form-control" multiple>
+                    <?php
+                    for ($i = 1; $i <= 3; $i++) {
+                        $imgCol = 'image' . $i;
+                        if (!empty($product[$imgCol])) {
+                            echo '<div class="mt-2">Current Image ' . $i . ': <img src="../' . htmlspecialchars($product[$imgCol]) . '" width="100"></div>';
+                        }
                     }
-                }
-                ?>
-            </div>
+                    ?>
+                </div>
 
-            <div class="col-md-3 mb-3">
-                <label class="form-label">Is Trending?</label>
-                <select name="isTrendingCategory" class="form-select">
-                    <option value="0" <?= ($product['isTrendingCategory'] == 0) ? 'selected' : '' ?>>No</option>
-                    <option value="1" <?= ($product['isTrendingCategory'] == 1) ? 'selected' : '' ?>>Yes</option>
-                </select>
-            </div>
-            <div class="col-md-3 mb-3">
-                <label class="form-label">Best Seller?</label>
-                <select name="isBestSeller" class="form-select">
-                    <option value="0" <?= ($product['isBestSeller'] == 0) ? 'selected' : '' ?>>No</option>
-                    <option value="1" <?= ($product['isBestSeller'] == 1) ? 'selected' : '' ?>>Yes</option>
-                </select>
-            </div>
-            <div class="col-md-3 mb-3">
-                <label class="form-label">New Arrival?</label>
-                <select name="isNewArrival" class="form-select">
-                    <option value="0" <?= ($product['isNewArrival'] == 0) ? 'selected' : '' ?>>No</option>
-                    <option value="1" <?= ($product['isNewArrival'] == 1) ? 'selected' : '' ?>>Yes</option>
-                </select>
-            </div>
-            <div class="col-md-3 mb-3">
-                <label class="form-label">Limited Stock?</label>
-                <select name="isLimitedStock" class="form-select">
-                    <option value="0" <?= ($product['isLimitedStock'] == 0) ? 'selected' : '' ?>>No</option>
-                    <option value="1" <?= ($product['isLimitedStock'] == 1) ? 'selected' : '' ?>>Yes</option>
-                </select>
-            </div>
+                <div class="col-md-3 mb-3">
+                    <label class="form-label">Is Trending?</label>
+                    <select name="isTrendingCategory" class="form-select">
+                        <option value="0" <?= ($product['isTrendingCategory'] == 0) ? 'selected' : '' ?>>No</option>
+                        <option value="1" <?= ($product['isTrendingCategory'] == 1) ? 'selected' : '' ?>>Yes</option>
+                    </select>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label class="form-label">Best Seller?</label>
+                    <select name="isBestSeller" class="form-select">
+                        <option value="0" <?= ($product['isBestSeller'] == 0) ? 'selected' : '' ?>>No</option>
+                        <option value="1" <?= ($product['isBestSeller'] == 1) ? 'selected' : '' ?>>Yes</option>
+                    </select>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label class="form-label">New Arrival?</label>
+                    <select name="isNewArrival" class="form-select">
+                        <option value="0" <?= ($product['isNewArrival'] == 0) ? 'selected' : '' ?>>No</option>
+                        <option value="1" <?= ($product['isNewArrival'] == 1) ? 'selected' : '' ?>>Yes</option>
+                    </select>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label class="form-label">Limited Stock?</label>
+                    <select name="isLimitedStock" class="form-select">
+                        <option value="0" <?= ($product['isLimitedStock'] == 0) ? 'selected' : '' ?>>No</option>
+                        <option value="1" <?= ($product['isLimitedStock'] == 1) ? 'selected' : '' ?>>Yes</option>
+                    </select>
+                </div>
 
-            <div class="col-12 text-center">
-                <button type="submit" class="btn btn-primary px-4 py-2 shadow-lg">Update Product</button>
+                <div class="col-12 text-center">
+                    <button type="submit" class="btn btn-primary px-4 py-2 shadow-lg">Update Product</button>
+                </div>
             </div>
-        </div>
-    </form>
-</div>
+        </form>
+    </div>
 </body>
+
 </html>

@@ -34,7 +34,7 @@ if ($category_id > 0) {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title><?= htmlspecialchars($category_name) ?> - Aroha Products</title>
+    <title><?= htmlspecialchars($category_name) ?> - PowerOn Products</title>
     <meta charset="UTF-8">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -67,7 +67,7 @@ if ($category_id > 0) {
                             <h6 class="card-title"><?= htmlspecialchars($product['name']) ?></h6>
                             <a href="product-detail.php?id=<?= $product['id'] ?>" class="btn btn-sm btn-outline-secondary mb-2 w-100">View</a>
                             <button
-                                class="btn btn-sm btn-success w-100 add-to-cart"
+                                class="btn btn-sm btn w-100 add-to-cart" style="background-color: #5a016d; color:white;"
                                 data-id="<?= $product['id'] ?>"
                                 data-name="<?= htmlspecialchars($product['name']) ?>"
                                 data-price="<?= $product['price'] ?>"
